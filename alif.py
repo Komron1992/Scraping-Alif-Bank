@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 def fetch_currency_data_alif():
-    # Настройка Chrome в headless-режиме
+    # Configure Chrome in headless mode
     options = Options()
     options.add_argument("--headless=new")
     options.add_argument("--disable-gpu")
@@ -16,17 +16,17 @@ def fetch_currency_data_alif():
 
     try:
         driver.get("https://www.alif.tj/")
-        time.sleep(5)  # Ждём, пока загрузится динамический контент
+        time.sleep(5)  # Wait for dynamic content to load
 
         rates = []
 
-        # Находим таблицу курсов валют
+        # Locate the currency rates table
         rows = driver.find_elements(By.CSS_SELECTOR, "tbody.text-lg tr")
         for row in rows:
             cols = row.find_elements(By.TAG_NAME, "td")
             if len(cols) == 3:
                 currency_text = cols[0].text.strip()
-                if currency_text.startswith("1 "):  # например, "1 USD"
+                if currency_text.startswith("1 "):  # e.g., "1 USD"
                     currency = currency_text.replace("1 ", "")
                     buy = cols[1].text.strip()
                     sell = cols[2].text.strip()
@@ -39,10 +39,7 @@ def fetch_currency_data_alif():
     finally:
         driver.quit()
 
-# Пример запуска
+# Example run
 if __name__ == '__main__':
     result = fetch_currency_data_alif()
     print(result)
-
-
-
